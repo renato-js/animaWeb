@@ -6,4 +6,4 @@ This is a javascript script to create easy animates in web sites when you scrool
 
 <h1>Implementation</h1>
 
-check the sample fold.
+check the sample folder.
