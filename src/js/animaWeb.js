@@ -9,80 +9,30 @@
 */
 
 // HOW TO USE
-// animaWeb(elemento, posicao-inicial-X, posicao-final-X, animacao, x inicial, x final, y inicial, y final)
-// size
-// position
+// anima("caixaContentDoElemento","elementoAnimado","distanciaBottomParaAnimacaoComecar");
 
 
-//get the X scroll page
-window.onscroll = onScroller;
-var posX;
-
-function onScroller() {
-	posX = document.body.scrollTop;
-	console.log(posX);
+//init
+window.onscroll = function () {
 	animaWeb();
-}
-
+};
 
 //animacao de temporizoacao
-function anima (_elemento, _posIni, _posEnd, _animacao, _xInit, _xEnd, _yInit, _yEnd ) {
-	var _e = document.getElementById(_elemento);
+function anima (_elContent, _elAnimation ,_posXEvent) {
 
-	//tamanho
-	if(_animacao == "size")
-	{	
-		var _cada = (_xEnd-_xInit)/(_posEnd-_posIni);			//pega quantos pixels vai aumentar da logo por pixel animado
-		if(posX > _posIni && posX < _posEnd)
-		{
-			//faz animacao de transicao
-			_e.style.height = ((posX-_posIni)*_cada)+"px";
-			_e.style.backgroundColor = "gray";			
-		}
-		else if(posX < _posIni)
-		{
-			//mostra versao pequena
-			_e.style.backgroundColor = "red";
-			_e.style.height = _xInit;
-		}
-		else if(posX > _posEnd)
-		{
-			//mostra versao grande
-			_e.style.backgroundColor = "red";
-			_e.style.height = _xEnd;			
-		}
+	var _eC = document.getElementById(_elContent);
+	var _eA = document.getElementById(_elAnimation);
+
+	//calculate the bottom offset
+	var posX = (document.body.scrollTop) - (_eC.offsetTop) + (window.innerHeight);
+
+	//check if condition is true to do the animation
+	if(posX >= _posXEvent)
+	{
+		//animate - opacity
+		_eA.style.webkitTransition = "opacity .3s";
+		_eA.style.transition = "opacity .3s";
+		_eA.style.opacity = "1";
 	}
-
-
-	if(_animacao == "posicao")
-	{	
-		var _cadaX = (_xEnd-_xInit)/(_posEnd-_posIni);			//pega quantos pixels vai aumentar da logo por pixel animado
-		var _cadaY = (_yEnd-_yInit)/(_posEnd-_posIni);			//pega quantos pixels vai aumentar da logo por pixel animado
-		
-		if(posX > _posIni && posX < _posEnd)
-		{
-			//faz animacao de transicao
-			_e.style.top = ((posX-_posIni)*_cadaX)+"px";
-			_e.style.left = ((posX-_posIni)*_cadaY)+"px";
-			_e.style.backgroundColor = "gray";			
-		}
-		else if(posX < _posIni)
-		{
-			//mostra versao pequena
-			_e.style.backgroundColor = "red";
-			_e.style.top = _xInit;
-			_e.style.left = _yInit;
-		}
-		else if(posX > _posEnd)
-		{
-			//mostra versao grande
-			_e.style.backgroundColor = "red";
-			_e.style.top = _xEnd;			
-			_e.style.left = _yEnd;			
-		}
-	}
-
-
 }
-
 
