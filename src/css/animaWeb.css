@@ -1,0 +1,8 @@
+/*css */
+
+	#logo{
+		width: 150px;
+		height: 150px;
+		background-color: gray;
+		position: fixed; top: 10px; left: 10px;
+	}

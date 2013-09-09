@@ -2,69 +2,24 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>animaWeb</title>
-
-	<style>
-	#logo{
-		width: 150px;
-		height: 150px;
-		background-color: gray;
-		position: fixed; top: 10px; left: 10px;
-	}
+	<title>animaWeb 1.0</title>
 
 
-	</style>
+	<link rel="stylesheet" href="src/css/animaWeb.css"/>
 
-	<!-- this version is not for Jquery or zeptos framework. is pure javascript... -->
-
+	<script type="text/javascript" src="src/js/animaWeb.js"></script>
+	
 	<script type="text/javascript">
 
-		var posX;
-
-		function init () {
-			window.onscroll = desce;
-			//inicial logo e final
+		function animaWeb () {
+			anima("logo",200,300,"size",0,200);
 		}
-
-
-		function desce () {
-			posX = document.body.scrollTop;
-			//console.log(posX);
-			//eleIni é o tamanho inicial do elemento e o final
-			anima("logo",0,600,"size",50,150);
-		}
-
-
-
-
-
-
-		//animacao de temporizoacao
-		function anima (_elemento, _posIni, _posEnd, _animacao, _eleIni, _eleEnd) {
-			var _e = document.getElementById(_elemento);
-			var _cada = _eleEnd/_posEnd;						//pega quantos pixels vai aumentar da logo por pixel animado
-			
-
-			console.log((_cada*posX)+"px");
-
-			if(_posEnd < posX)
-			{
-				//para animacao
-				_e.style.backgroundColor = "red";
-			}
-			else
-			{
-				//faz animacao
-				_e.style.height = (_cada*posX)+"px";
-				_e.style.backgroundColor = "gray";				
-			}
-		}
-
-
 
 	</script>
+
+
 </head>
-<body onload="init()">
+<body>
 
 	<header>
 		<div id="logo"></div>
