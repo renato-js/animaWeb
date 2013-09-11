@@ -1,5 +1,5 @@
 /*
-/ * animaWeb.js 2.0
+/ * animaWeb.js 2.1
 / *
 / * @author: Renato Santos
 / * www.grupoartway.com.br
@@ -41,25 +41,11 @@
 		if(posX >= _posXEvent)
 		{
 			//animate - opacity
-			_eA.style.webkitAnimation = "opacidade 1s";
-			
-			//callback animate End
-			_eA.addEventListener("webkitAnimationEnd", callfunction,false);
-			_eA.addEventListener("animationend", callfunction,false);
-			_eA.addEventListener("oanimationend", callfunction,false);
-
+			_eA.style.webkitAnimation = parameters.animacao+" 1s";
 			window.removeEventListener("scroll",animaWeb.checaAnima);	//limpa listener event
 		}
 	}
 
-	//funcao callback ao terminar animacao
-	function callfunction (parameters) {
-		parameters = merge(parameters);
-		
-		//fixbug opacity
-		var _eA = document.getElementById(parameters.elemento);
-		_eA.style.opacity = "1";
-	}
 
 	//propriedades default
 	animaWeb.propDefault = {
