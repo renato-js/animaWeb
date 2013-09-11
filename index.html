@@ -6,14 +6,22 @@
 
 
 	<link rel="stylesheet" href="src/css/animaWeb.css"/>
-
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="src/js/animaWeb.js"></script>
 	
 	<script type="text/javascript">
+		
+		$(document).ready(function () {
+			
+			anima.mostraTexto({
+				"texto": "hello world"
+			})	
 
-		function animaWeb () {
-			anima("caixa","q1",150);
-		}
+		});
+
+		// function animaWeb () {
+		// 	anima("caixa","q1",150);
+		// }
 
 	</script>
 
