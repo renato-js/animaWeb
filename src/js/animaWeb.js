@@ -41,17 +41,29 @@
 		if(posX >= _posXEvent)
 		{
 			//animate - opacity
-			_eA.style.webkitTransition = "opacity .3s";
-			_eA.style.transition = "opacity .3s";
-			_eA.style.opacity = "1";
+			_eA.style.webkitAnimation = "opacidade 1s";
+			
+			//callback animate End
+			_eA.addEventListener("webkitAnimationEnd", callfunction,false);
+			_eA.addEventListener("animationend", callfunction,false);
+			_eA.addEventListener("oanimationend", callfunction,false);
+
 			window.removeEventListener("scroll",animaWeb.checaAnima);	//limpa listener event
 		}
 	}
 
+	//funcao callback ao terminar animacao
+	function callfunction (parameters) {
+		parameters = merge(parameters);
+		
+		//fixbug opacity
+		var _eA = document.getElementById(parameters.elemento);
+		_eA.style.opacity = "1";
+	}
 
 	//propriedades default
 	animaWeb.propDefault = {
-		"texto": "sem texto",
+		"animacao": "opacidade",
 		"content": "body",
 		"elemento": "body",
 		"inicio": 0
