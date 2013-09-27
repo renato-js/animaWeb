@@ -9,57 +9,97 @@
 */
 
 // HOW TO USE
-// ...
+// define os parametros para o elemento selecionado
+// opacidade SEMPRE
+// animacoes: opacidade - toLeft - toRight - toDown - toUp
 
 
-;(function (window,document, undefined) {
+
+
+
+
+;(function (window,document,undefined) {
 	
-	animaWeb = function (parameters) {
-		//exec
-		window.addEventListener("scroll",animaWeb.checaAnima, false);
-		parameters = merge(parameters);
+	//contrutora
+	var _elemento = this; 	// elemento animado
+	var _content; 			// conteudo que está o elemento a ser animado
+	var _offset; 			// espaco em relacao ao bottom para ocorrer a animacao
+	var _animacao;			// animacao que ocorrera
+
+
+	$.fn.animaWeb = function (_con, _ani, _off) {
+		window.addEventListener("scroll",$.fn.animaWeb.checaAnimacao, false);
+		_content = _con;
+		_offset = _off;
+		_animacao = _ani;
 	}
 
-	//
-	animaWeb.mostraTexto = function (parameters) {
-		//merge
-		parameters = merge(parameters);
-	}
-
-	//
-	animaWeb.checaAnima = function (parameters) {
-		parameters = merge(parameters);
-
-	 	var _eC = document.getElementById(parameters.content);
-	 	var _eA = document.getElementById(parameters.elemento);
-	 	var _posXEvent = parameters.inicio;
-
-		//calculates the bottom offset
+	//verifica ao rolar a barra
+	$.fn.animaWeb.checaAnimacao = function () {
+ 	 	var _eC = document.getElementById(_content);
+ 	 	var _eA = document.getElementById(_elemento);
+ 	 	console.log("obj");
+ 	 	var _posXEvent = _offset;
 		var posX = (document.body.scrollTop) - (_eC.offsetTop) + (window.innerHeight);
 
 		//check if condition is true to do the animation
 		if(posX >= _posXEvent)
 		{
 			//animate - opacity
-			_eA.style.webkitAnimation = parameters.animacao+" 1s";
-			window.removeEventListener("scroll",animaWeb.checaAnima);	//limpa listener event
+			console.log("cumprio");
+			//_eA.style.webkitAnimation = _animacao+" 1s";
+			window.removeEventListener("scroll",$.fn.animaWeb.checaAnimacao,false);	//limpa listener event
 		}
 	}
 
-
-	//propriedades default
-	animaWeb.propDefault = {
-		"animacao": "opacidade",
-		"content": "body",
-		"elemento": "body",
-		"inicio": 0
-	}
-
-	//merge
-	function merge (parameters) {
-		return parameters = $.extend(animaWeb.propDefault, parameters);
-	}
-
 })(window,document);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ;(function (window,document, undefined) {
+	
+// 	$.fn.animaWeb = function (_content, _elemento, _animacao, _offset) {
+// 		//exec
+// 		window.addEventListener("scroll",$.fn.animaWeb.checaAnima, false);
+// 	}
+
+// 	//
+// 	$.fn.animaWeb.checaAnima = function (parameters) {
+
+// 	 	var _eC = document.getElementById(_con);
+// 	 	var _eA = document.getElementById(_elemento);
+
+// 	 	var _posXEvent = parameters.inicio;
+
+// 		//calculates the bottom offset
+// 		var posX = (document.body.scrollTop) - (_eC.offsetTop) + (window.innerHeight);
+
+// 		//check if condition is true to do the animation
+// 		if(posX >= _posXEvent)
+// 		{
+// 			//animate - opacity
+// 			console.log("cumprio");
+// 			_eA.style.webkitAnimation = parameters.animacao+" 1s";
+// 			window.removeEventListener("scroll",$.fn.animaWeb.checaAnima);	//limpa listener event
+// 		}
+// 	}
+
+
+// })(window,document);
 
 
