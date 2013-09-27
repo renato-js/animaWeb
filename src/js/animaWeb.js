@@ -1,11 +1,12 @@
 /*
-/ * animaWeb.js 2.1
+/ * animaWeb.js 2.3
 / *
 / * @author: Renato Santos
 / * www.grupoartway.com.br
 / * github.com/renato-js/animaWeb.git
 / * Date 09/09/2013
 / * Date 11/09/2013
+/ * Date 27/09/2013
 */
 
 // HOW TO USE
@@ -14,92 +15,55 @@
 // animacoes: opacidade - toLeft - toRight - toDown - toUp
 
 
-
-
-
-
 ;(function (window,document,undefined) {
 	
 	//contrutora
-	var _elemento = this; 	// elemento animado
+	var _elemento; 			// elemento animado
 	var _content; 			// conteudo que está o elemento a ser animado
 	var _offset; 			// espaco em relacao ao bottom para ocorrer a animacao
 	var _animacao;			// animacao que ocorrera
+	var isIE;				// true é ie
 
+	$.fn.animaWeb = function (_ani, _off) {
+		
+		//check if this is a 'IE'
+		isIE = window.attachEvent ? isIE=true : isIE=false;
 
-	$.fn.animaWeb = function (_con, _ani, _off) {
-		window.addEventListener("scroll",$.fn.animaWeb.checaAnimacao, false);
-		_content = _con;
+		if (isIE) {
+			window.attachEvent("onscroll",$.fn.animaWeb.checaAnimacao);			
+		}
+		else {
+		   window.addEventListener("scroll",$.fn.animaWeb.checaAnimacao, false);
+		}
+
+		//atualizando variaveis
+		_elemento = this.selector;
+		_content = this[0].parentElement;
 		_offset = _off;
 		_animacao = _ani;
 	}
 
+
 	//verifica ao rolar a barra
 	$.fn.animaWeb.checaAnimacao = function () {
- 	 	var _eC = document.getElementById(_content);
- 	 	var _eA = document.getElementById(_elemento);
- 	 	console.log("obj");
- 	 	var _posXEvent = _offset;
-		var posX = (document.body.scrollTop) - (_eC.offsetTop) + (window.innerHeight);
+
+ 	 	//calcula quanto esta em relacao ao bottom
+ 	 	if(isIE) {
+ 	 		var posX = (document.documentElement.scrollTop) - (_content.offsetTop) + (window.innerHeight);
+ 	 	}
+ 	 	else {
+ 	 		var posX = (document.body.scrollTop) - (_content.offsetTop) + (window.innerHeight);
+ 	 	}
 
 		//check if condition is true to do the animation
-		if(posX >= _posXEvent)
+		if(posX >= _offset)
 		{
-			//animate - opacity
-			console.log("cumprio");
-			//_eA.style.webkitAnimation = _animacao+" 1s";
-			window.removeEventListener("scroll",$.fn.animaWeb.checaAnimacao,false);	//limpa listener event
+			console.log("cumprio "+_elemento);
+			if(isIE)window.detachEvent("onscroll",$.fn.animaWeb.checaAnimacao);	//limpa listener event
+			if(!isIE)window.removeEventListener("scroll",$.fn.animaWeb.checaAnimacao,false);	//limpa listener event
+
+			//FAZER ANIMAÇÃO
 		}
 	}
-
 })(window,document);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ;(function (window,document, undefined) {
-	
-// 	$.fn.animaWeb = function (_content, _elemento, _animacao, _offset) {
-// 		//exec
-// 		window.addEventListener("scroll",$.fn.animaWeb.checaAnima, false);
-// 	}
-
-// 	//
-// 	$.fn.animaWeb.checaAnima = function (parameters) {
-
-// 	 	var _eC = document.getElementById(_con);
-// 	 	var _eA = document.getElementById(_elemento);
-
-// 	 	var _posXEvent = parameters.inicio;
-
-// 		//calculates the bottom offset
-// 		var posX = (document.body.scrollTop) - (_eC.offsetTop) + (window.innerHeight);
-
-// 		//check if condition is true to do the animation
-// 		if(posX >= _posXEvent)
-// 		{
-// 			//animate - opacity
-// 			console.log("cumprio");
-// 			_eA.style.webkitAnimation = parameters.animacao+" 1s";
-// 			window.removeEventListener("scroll",$.fn.animaWeb.checaAnima);	//limpa listener event
-// 		}
-// 	}
-
-
-// })(window,document);
-
 
