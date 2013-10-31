@@ -26,7 +26,7 @@
 		_$ = function (_elementoID) {return document.getElementById(_elementoID);}
 
 	//constructor
-	animaWeb = function (_elem, _off, _fun,_funBefore) {
+	animaWeb = function (parameters) {
 
 		if (isIE) {
 			window.attachEvent("onscroll",animaWeb.checaAnimacaoIe);			
@@ -36,12 +36,12 @@
 		}
 
 		//execute function before
-		if(arguments[3] != undefined)_funBefore();
+		if(parameters.before != undefined) parameters.before();
 
 		//update vars
-		sElementos[sElementos.length] = _$(_elem);
-		sOffsets[sOffsets.length] = _off;
-		sFuncoes[sFuncoes.length] = _fun;
+		sElementos[sElementos.length] = _$(parameters.elemento);		//get element
+		sOffsets[sOffsets.length] = parameters.offset;					//get offset
+		sFuncoes[sFuncoes.length] = parameters.after;					//get function call after offset is complete
 	}
 
 	//check scrolling - All Browser

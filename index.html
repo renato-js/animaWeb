@@ -12,19 +12,31 @@
 		//ao carregar a pagina
 		function init () {
 
-			animaWeb("foo1",100,
-				function () {console.log("depois 1");},
-				function () {console.log("antes 1");}
-				);
-		
-			animaWeb("foo2",0,
-				function () {console.log("depois 2");},
-				function () {console.log("antes 2");}
-				);
+			//anima1
+			animaWeb({
+				'elemento': 'foo1',
+				'offset': 100,
+				'after': function (){console.log("depois 1");},
+				'before': function () {console.log("antes 1");}
+			});
+
+			//anima2
+			animaWeb({
+				'elemento': 'foo2',
+				'offset': 0,
+				'after': function (){console.log("depois 2");},
+			});
+
+			animaWeb({
+				'elemento': 'foo3',
+				'offset':300,
+				'after': function () {alert("foo 3");}
+			})
+
 		}
 
 
-		
+
 
 
 
