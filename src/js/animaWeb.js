@@ -1,5 +1,5 @@
 /*
-/ * animaWeb.js 2.5
+/ * animaWeb.js 3.0
 / *
 / * @author: Renato Santos
 / * www.grupoartway.com.br
@@ -10,6 +10,7 @@
 / * Date 21/10/2013
 / / v2.4 - it not more Jquery plugin, add this in all your project without Jquery library!
 // BUG: its only works if you apply to one DIV.
+// v3.0 - you can apply a function to many ID elements on you page. This events can be call once.
 */ 
 
 // HOW TO USE
@@ -18,68 +19,81 @@
 
 ;(function (window,document,undefined) {
 	
-	var sElementos = []; 			// elementos animado
-	var sOffsets = []; 			// espaco em relacao ao bottom para ocorrer a animacao
-	var sFuncoes = [];			//_funcao executada ao cumprir limite
-	var isIE;				// true é ie
-	
-	//captura elemento pela ID
-	var _$ = function (_elementoID) {
-		return document.getElementById(_elementoID);
-	}
+	var sElementos = [], 		// array all elements
+		sOffsets = [], 			// array all offsets
+		sFuncoes = [],			// array all functions
+		isIE =  window.attachEvent ? isIE=true : isIE=false,					// true é ie	
+		
+		//it do the same as $ Jquery operator, but... very simplify
+		_$ = function (_elementoID) {return document.getElementById(_elementoID);}
 
-	//construtora
+	//constructor
 	animaWeb = function (_elem, _off, _fun) {
 
-		//check if this is a 'IE'
-		isIE = window.attachEvent ? isIE=true : isIE=false;
-
 		if (isIE) {
-			window.attachEvent("onscroll",animaWeb.checaAnimacao);			
+			window.attachEvent("onscroll",animaWeb.checaAnimacaoIe);			
 		}
 		else {
 			window.addEventListener("scroll",animaWeb.checaAnimacao, false);
 		}
 
-		//atualizando variaveis
+		//update vars
 		sElementos[sElementos.length] = _$(_elem);
 		sOffsets[sOffsets.length] = _off;
 		sFuncoes[sFuncoes.length] = _fun;
 	}
 
-	//verifica ao rolar a barra
+	//check scrolling - All Browser
 	animaWeb.checaAnimacao = function () {
 
-		//verifica cada elemento animado na tela
 		for(i=0 ; i<sElementos.length ; i++)
 		{
-	 	 	//calcula quanto esta em relacao ao bottom
-	 	 	if(isIE) {
-	 	 		var posX = (document.documentElement.scrollTop) - (sElementos[i].offsetTop) + (window.innerHeight);
-	 	 	}
-	 	 	else {
-	 	 		var posX = (document.body.scrollTop) - (sElementos[i].offsetTop) + (window.innerHeight);
-	 	 	}
+			//get document bottom offset
+	 	 	var posX = (document.body.scrollTop) - (sElementos[i].offsetTop) + (window.innerHeight);
 
-		 	//check if condition is true to do the animation
+		 	//check if offset is same one element
 			if(posX >= sOffsets[i])
 			{
-				//exec function defined by developer
+				//call function defined by you and clear arrays
 				sFuncoes[i]();
 				sFuncoes.shift();
 				sElementos.shift();
 				sOffsets.shift();
-
-				//finalizou toda a busca de elementos animados na tela
-				if(sElementos.length == 0)
-				{
-					if(isIE)window.detachEvent("onscroll",animaWeb.checaAnimacao);	//limpa listener event
-					if(!isIE)window.removeEventListener("scroll",animaWeb.checaAnimacao,false);	//limpa listener event
-				}
+				scrollStop();
 			}
-
 		}
-
 	}
+
+
+	//check scrolling - Internet Explorer
+	animaWeb.checaAnimacaoIe = function () {
+
+		for(i=0 ; i<sElementos.length ; i++)
+		{
+	 	 	//get document bottom offset
+	 	 	var posX = (document.documentElement.scrollTop) - (sElementos[i].offsetTop) + (window.innerHeight);
+
+		 	//check if offset is same one element
+			if(posX >= sOffsets[i])
+			{
+				//call function defined by you and clear arrays
+				sFuncoes[i]();
+				sFuncoes.shift();
+				sElementos.shift();
+				sOffsets.shift();
+				scrollStop ();
+			}
+		}
+	}
+
+	//clear scrolling event
+	function scrollStop () {
+		if(sElementos.length == 0)
+		{
+			if(isIE)window.detachEvent("onscroll",animaWeb.checaAnimacao);	//limpa listener event
+			if(!isIE)window.removeEventListener("scroll",animaWeb.checaAnimacao,false);	//limpa listener event
+		}
+	}
+
 })(window,document);
 
