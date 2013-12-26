@@ -1,9 +1,9 @@
 /*
-/ * animaWeb.js 3.1
+/ * checkpointJS.js 3.1
 / *
 / * @author: Renato Santos
 / * www.grupoartway.com.br
-/ * github.com/renato-js/animaWeb
+/ * github.com/renato-js/checkpointjs
 / * Date 09/09/2013
 / * Date 11/09/2013
 / * Date 27/09/2013
@@ -13,7 +13,6 @@
 // v3.1 - add function BEFORE. Now you can call some function before the scrool down
 */ 
 
-// HOW TO USE
 
 ;(function (window,document,undefined) {
 	
@@ -26,26 +25,27 @@
 		_$ = function (_elementoID) {return document.getElementById(_elementoID);}
 
 	//constructor
-	animaWeb = function (parameters) {
+	checkpointjs = function (parameters) {
 
 		if (isIE) {
-			window.attachEvent("onscroll",animaWeb.checaAnimacaoIe);			
+			window.attachEvent("onscroll",checkpointjs.checaAnimacaoIe);			
 		}
 		else {
-			window.addEventListener("scroll",animaWeb.checaAnimacao, false);
+			window.addEventListener("scroll",checkpointjs.checaAnimacao, false);
 		}
 
 		//execute function before
 		if(parameters.before != undefined) parameters.before();
 
 		//update vars
-		sElementos[sElementos.length] = _$(parameters.elemento);		//get element
+		sElementos[sElementos.length] = _$(parameters.elem);		//get element
 		sOffsets[sOffsets.length] = parameters.offset;					//get offset
+		//if offset is undefined
 		sFuncoes[sFuncoes.length] = parameters.after;					//get function call after offset is complete
 	}
 
 	//check scrolling - All Browser
-	animaWeb.checaAnimacao = function () {
+	checkpointjs.checaAnimacao = function () {
 
 		for(i=0 ; i<sElementos.length ; i++)
 		{
@@ -67,7 +67,7 @@
 
 
 	//check scrolling - Internet Explorer
-	animaWeb.checaAnimacaoIe = function () {
+	checkpointjs.checaAnimacaoIe = function () {
 
 		for(i=0 ; i<sElementos.length ; i++)
 		{
@@ -91,8 +91,8 @@
 	function scrollStop () {
 		if(sElementos.length == 0)
 		{
-			if(isIE)window.detachEvent("onscroll",animaWeb.checaAnimacao);	//limpa listener event
-			if(!isIE)window.removeEventListener("scroll",animaWeb.checaAnimacao,false);	//limpa listener event
+			if(isIE)window.detachEvent("onscroll",checkpointjs.checaAnimacao);	//limpa listener event
+			if(!isIE)window.removeEventListener("scroll",checkpointjs.checaAnimacao,false);	//limpa listener event
 		}
 	}
 
