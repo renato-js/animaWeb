@@ -1,5 +1,5 @@
 /*
-/ * checkpointJS.js 3.1
+/ * checkpointJS.js 3.1 - v2 ( versao loop infinito )
 / *
 / * @author: Renato Santos
 / * www.grupoartway.com.br
@@ -17,8 +17,10 @@
 ;(function (window,document,undefined) {
 	
 	var sElementos = [], 		// array all elements
+		sOpen = [], 			// array all open if is open animation
 		sOffsets = [], 			// array all offsets
-		sFuncoes = [],			// array all functions
+		sFuncoesAfter = [],				// array all after
+		sFuncoesBefore = [],			// array all functions before
 		isIE =  window.attachEvent ? isIE=true : isIE=false,					// true é ie	
 		
 		//it do the same as $ Jquery operator, but... very simplify
@@ -38,29 +40,33 @@
 		if(parameters.before != undefined) parameters.before();
 
 		//update vars
-		sElementos[sElementos.length] = _$(parameters.elem);		//get element
+		sElementos[sElementos.length] = _$(parameters.elem);			//get element
 		sOffsets[sOffsets.length] = parameters.offset;					//get offset
+		sOpen[sOpen.length] = false;									//get offset
+		
 		//if offset is undefined
-		sFuncoes[sFuncoes.length] = parameters.after;					//get function call after offset is complete
+		sFuncoesAfter[sFuncoesAfter.length] = parameters.after;					//get function call after offset is complete
+		sFuncoesBefore[sFuncoesBefore.length] = parameters.before;					//get function call after offset is complete
 	}
 
 	//check scrolling - All Browser
 	checkpointjs.checaAnimacao = function () {
-
+		
 		for(i=0 ; i<sElementos.length ; i++)
 		{
 			//get document bottom offset
 	 	 	var posX = (document.body.scrollTop) - (sElementos[i].offsetTop) + (window.innerHeight);
-
+		 	
 		 	//check if offset is same one element
-			if(posX >= sOffsets[i])
+			if(posX > sOffsets[i] && sOpen[i] == false)
 			{
-				//call function defined by you and clear arrays
-				sFuncoes[i]();
-				sFuncoes.shift();
-				sElementos.shift();
-				sOffsets.shift();
-				scrollStop();
+				sOpen[i] = true;
+				sFuncoesAfter[i]();
+			}
+			else if(posX < sOffsets[i] && sOpen[i] == true)
+			{
+				sOpen[i] = false;
+				sFuncoesBefore[i]();
 			}
 		}
 	}
@@ -75,14 +81,15 @@
 	 	 	var posX = (document.documentElement.scrollTop) - (sElementos[i].offsetTop) + (window.innerHeight);
 
 		 	//check if offset is same one element
-			if(posX >= sOffsets[i])
+			if(posX > sOffsets[i] && sOpen[i] == false)
 			{
-				//call function defined by you and clear arrays
-				sFuncoes[i]();
-				sFuncoes.shift();
-				sElementos.shift();
-				sOffsets.shift();
-				scrollStop ();
+				sOpen[i] = true;
+				sFuncoesAfter[i]();
+			}
+			else if(posX < sOffsets[i] && sOpen[i] == true)
+			{
+				sOpen[i] = false;
+				sFuncoesBefore[i]();
 			}
 		}
 	}
